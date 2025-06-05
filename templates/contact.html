@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Contacto</h1>
+<form method="POST" action="{{ url_for('contact') }}">
+    <label>Nombre: <input type="text" name="name" required></label><br>
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>¿Cuánto es 3 + 4?: <input type="text" name="captcha" required></label><br>
+    <button type="submit">Enviar</button>
+</form>
+<p>También puedes escribirnos a <a href="mailto:asescodb@gmail.com">asescodb@gmail.com</a></p>
+<ul class="social">
+    <li><a href="#">Facebook</a></li>
+    <li><a href="#">Instagram</a></li>
+    <li><a href="#">X</a></li>
+</ul>
+{% endblock %}

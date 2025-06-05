@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="background-color: #001845; padding: 20px; border-radius: 10px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1 style="font-size: 2.2em; color: white; margin-bottom: 0;">
+                <span style="color: white;">ASOCIACIÓN ESPAÑOLA</span><br>
+                <span style="color: #ffd700;">DE COLECCIONISTAS DE</span><br>
+                <span style="color: #ff4500;">DRAGON BALL</span>
+            </h1>
+        </div>
+        <div>
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Asociación" style="height: 120px;">
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 40px; text-align: center;">
+    <h2 style="color: #ff4500;">Bienvenido a la Asociación Española de Coleccionistas de Dragon Ball</h2>
+    <p style="font-size: 1.2em;">Hazte socio y pasa a formar parte de los Guerreros Z</p>
+
+    {% if session.username %}
+        <p style="margin-top: 20px; font-weight: bold;">
+            Has iniciado sesión como <strong>{{ session.username }}</strong>. Accede a la
+            <a href="{{ url_for('members_area') }}">Zona para Socios</a>.
+        </p>
+    {% endif %}
+</div>
+
+<hr style="margin: 40px auto; width: 60%;">
+
+<div style="text-align: center;">
+    <h3>¿Qué encontrarás como socio?</h3>
+    <ul style="list-style: none; padding: 0; font-size: 1.1em;">
+        <li>✅ Acceso a eventos exclusivos</li>
+        <li>🎁 Participación en sorteos mensuales</li>
+        <li>🖼 Compartir tu colección en la galería de miembros</li>
+        <li>🗓 Un calendario interactivo para confirmar asistencia</li>
+        <li>🛠 Zona privada de administración (solo para admins)</li>
+    </ul>
+    <p style="margin-top: 20px;"><strong>Cuota anual: solo 5 €</strong></p>
+</div>
+
+<hr style="margin: 40px auto; width: 60%;">
+
+<div style="text-align: center;">
+    <p style="font-size: 1.2em; font-style: italic;">
+        “¡Nuestra fuerza aumenta con cada nuevo coleccionista! ¡Únete!”
+    </p>
+</div>
+{% endblock %}

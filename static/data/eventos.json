@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "titulo": "Quedada Friki en Madrid",
+        "fecha": "2025-06-15",
+        "hora": "17:00",
+        "lugar": "Parque del Retiro",
+        "tipo": "quedada",
+        "asistentes": 12
+    },
+    {
+        "id": 2,
+        "titulo": "Concurso de Dibujo DB",
+        "fecha": "2025-07-01",
+        "hora": "20:00",
+        "lugar": "Discord AESCODB",
+        "tipo": "concurso",
+        "asistentes": 9
+    },
+    {
+        "id": 3,
+        "titulo": "Sorteo Mensual",
+        "fecha": "2025-07-10",
+        "hora": "18:00",
+        "lugar": "Online",
+        "tipo": "sorteo",
+        "asistentes": 0
+    },
+    {
+        "id": 4,
+        "titulo": "Reunión de Junta Directiva",
+        "fecha": "2025-08-03",
+        "hora": "19:30",
+        "lugar": "Google Meet",
+        "tipo": "reunion",
+        "asistentes": 6
+    }
+]

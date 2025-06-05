@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos - AESCODB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .timeline {
+            position: relative;
+            margin: 2rem auto;
+            padding: 2rem 0;
+            max-width: 800px;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #FF7F00;
+        }
+        .event-card {
+            position: relative;
+            margin: 1.5rem 0 1.5rem 60px;
+            padding: 1rem;
+            background-color: #ffffff;
+            border-left: 6px solid #FF7F00;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        .event-card h3 {
+            margin: 0;
+            color: #1a1a1a;
+        }
+        .event-card p {
+            margin: 0.3rem 0;
+            color: #333;
+        }
+        .event-icon {
+            position: absolute;
+            top: 15px;
+            left: -32px;
+            background-color: #FF7F00;
+            color: white;
+            border-radius: 50%;
+            padding: 0.6rem;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        .search-bar {
+            max-width: 500px;
+            margin: 2rem auto;
+            display: flex;
+            justify-content: center;
+        }
+        .search-bar input {
+            padding: 0.7rem;
+            width: 100%;
+            border: 2px solid #FF7F00;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <a href="{{ url_for('home') }}" class="logo-link">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Asociación" class="logo">
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('members_area') }}">Zona de Socios</a></li>
+                <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                {% if session.role == 'Admin' %}
+                    <li><a href="{{ url_for('admin_dashboard') }}">Panel Admin</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content">
+        <h1 class="center">📅 Eventos Programados</h1>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar por título, tipo o lugar...">
+        </div>
+
+        <div id="timeline" class="timeline"></div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const timeline = document.getElementById("timeline");
+            const searchInput = document.getElementById("searchInput");
+
+            const iconMap = {
+                "Concurso": "fa-trophy",
+                "Sorteo": "fa-gift",
+                "Reunión": "fa-handshake",
+                "Quedada": "fa-users"
+            };
+
+            fetch("/static/data/eventos.json")
+                .then(response => response.json())
+                .then(data => {
+                    renderEvents(data);
+
+                    searchInput.addEventListener("input", () => {
+                        const filtered = data.filter(event =>
+                            event.titulo.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                            event.tipo.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                            event.lugar.toLowerCase().includes(searchInput.value.toLowerCase())
+                        );
+                        renderEvents(filtered);
+                    });
+                });
+
+            function renderEvents(events) {
+                timeline.innerHTML = "";
+                events.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+                events.forEach(event => {
+                    const card = document.createElement("div");
+                    card.className = "event-card";
+
+                    const icon = document.createElement("div");
+                    icon.className = `event-icon fas ${iconMap[event.tipo] || 'fa-calendar'}`;
+
+                    const title = document.createElement("h3");
+                    title.textContent = event.titulo;
+
+                    const date = document.createElement("p");
+                    date.innerHTML = `<strong>📅 Fecha:</strong> ${event.fecha}`;
+
+                    const place = document.createElement("p");
+                    place.innerHTML = `<strong>📍 Lugar:</strong> ${event.lugar}`;
+
+                    const type = document.createElement("p");
+                    type.innerHTML = `<strong>📌 Tipo:</strong> ${event.tipo}`;
+
+                    const attendees = document.createElement("p");
+                    attendees.innerHTML = `<strong>👥 Asistentes:</strong> ${event.asistentes}`;
+
+                    card.appendChild(icon);
+                    card.appendChild(title);
+                    card.appendChild(date);
+                    card.appendChild(place);
+                    card.appendChild(type);
+                    card.appendChild(attendees);
+
+                    timeline.appendChild(card);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

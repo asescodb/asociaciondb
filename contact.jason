@@ -1,0 +1,34 @@
+[
+    {
+        "titulo": "Quedada Zona Centro",
+        "fecha": "2025-07-15",
+        "hora": "18:00",
+        "lugar": "Madrid - Parque del Retiro",
+        "tipo": "quedada",
+        "asistentes": 12
+    },
+    {
+        "titulo": "Concurso de Dibujos",
+        "fecha": "2025-07-25",
+        "hora": "16:30",
+        "lugar": "Online",
+        "tipo": "concurso",
+        "asistentes": 8
+    },
+    {
+        "titulo": "Reunión de Socios",
+        "fecha": "2025-08-10",
+        "hora": "20:00",
+        "lugar": "Barcelona - Sede Oficial",
+        "tipo": "reunion",
+        "asistentes": 6
+    },
+    {
+        "titulo": "Fiesta Temática Dragon Ball",
+        "fecha": "2025-08-30",
+        "hora": "22:00",
+        "lugar": "Valencia - Sala Kame House",
+        "tipo": "quedada",
+        "asistentes": 15
+    }
+]

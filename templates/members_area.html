@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zona para Socios - AESCODB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <a href="{{ url_for('home') }}" class="logo-link">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Asociación" class="logo">
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}">Inicio</a></li>
+                <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                {% if session.role == 'Admin' %}
+                    <li><a href="{{ url_for('admin_dashboard') }}">Panel Admin</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="members-container">
+        <h1>Bienvenido/a {{ session.username }}</h1>
+
+        <!-- CALENDARIO Y CARNET -->
+        <div class="card-grid">
+            <a class="card" href="{{ url_for('calendar') }}">
+                <h2>🗓️ Calendario de Eventos</h2>
+                <p>Consulta las quedadas, reuniones y concursos programados.</p>
+            </a>
+            <a class="card" href="{{ url_for('member_card') }}">
+                <h2>📇 Carné de Socio</h2>
+                <p>Visualiza y descarga tu carné en PDF e imagen.</p>
+            </a>
+        </div>
+
+        <!-- ACCESOS INDIVIDUALES -->
+        <div class="card-grid">
+            <a class="card" href="{{ url_for('events') }}">
+                <h2>🎉 Eventos</h2>
+                <p>Accede a todos los eventos de la asociación.</p>
+            </a>
+            <a class="card" href="{{ url_for('contests') }}">
+                <h2>🏆 Concursos</h2>
+                <p>Consulta concursos activos, bases y participa.</p>
+            </a>
+            <a class="card" href="{{ url_for('raffles') }}">
+                <h2>🎁 Sorteos</h2>
+                <p>Mira los sorteos disponibles y participa automáticamente.</p>
+            </a>
+            <a class="card" href="{{ url_for('resources') }}">
+                <h2>📁 Documentos y Galerías</h2>
+                <p>Descarga archivos exclusivos y explora fotos.</p>
+            </a>
+            <a class="card" href="{{ url_for('news') }}">
+                <h2>📰 Noticias Privadas</h2>
+                <p>Lee las últimas novedades para socios.</p>
+            </a>
+            <a class="card" href="{{ url_for('profile') }}">
+                <h2>👤 Mi Perfil</h2>
+                <p>Consulta o edita tus datos personales y método de pago.</p>
+            </a>
+        </div>
+    </main>
+</body>
+</html>

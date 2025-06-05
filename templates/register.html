@@ -1,0 +1,31 @@
+<form method="POST" action="{{ url_for('register') }}" class="formulario-registro">
+    <label>Nombre completo:</label>
+    <input type="text" name="name" required>
+
+    <label>Correo electrónico:</label>
+    <input type="email" name="email" required>
+
+    <label>Nombre de usuario:</label>
+    <input type="text" name="username" required>
+
+    <label>Contraseña:</label>
+    <input type="password" name="password" required>
+
+    <label>Método de pago:</label>
+    <select name="payment_method" required>
+        <option value="">Selecciona uno</option>
+        <option value="Transferencia">Transferencia</option>
+        <option value="Bizum">Bizum</option>
+        <option value="PayPal">PayPal</option>
+    </select>
+
+    <label>
+        <input type="checkbox" name="terms" required>
+        Acepto los estatutos y condiciones de la asociación
+    </label>
+
+    <label>¿Cuánto es 4 + 3?</label>
+    <input type="number" name="captcha" required>
+
+    <button type="submit">Registrarse</button>
+</form>

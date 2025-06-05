@@ -1,0 +1,37 @@
+from pathlib import Path
+
+about_html = """
+{% extends 'base.html' %}
+{% block content %}
+    <section class="about-section">
+        <h1>Quiénes Somos</h1>
+        <p>La Asociación Española de Coleccionistas de Dragon Ball nace con el objetivo de reunir a todos los apasionados de esta legendaria saga que comparten la afición por coleccionar sus objetos más representativos. Nuestro propósito es fomentar el conocimiento y la conservación de estas colecciones, así como apoyar a todos los socios en la difusión de su pasión.</p>
+        <p>Entre los fines de la asociación destacan:</p>
+        <ul>
+            <li>Organizar eventos temáticos donde los socios puedan exhibir y compartir sus colecciones.</li>
+            <li>Preservar el legado cultural de Dragon Ball a través de piezas únicas y material exclusivo.</li>
+            <li>Dar visibilidad a las colecciones de los socios mediante una galería de imágenes accesible desde la zona privada.</li>
+            <li>Fomentar la participación activa de los miembros con sorteos periódicos, premios y actividades especiales.</li>
+        </ul>
+        <p>La galería de colecciones permite a los socios subir sus propias fotografías acompañadas de un título y una breve descripción. Todas las publicaciones son revisadas y aprobadas previamente por un administrador para garantizar la calidad y el respeto dentro de la comunidad.</p>
+        <div class="cta">
+            <a href="{{ url_for('register') }}" class="button">Hazte Socio</a>
+        </div>
+        <div class="social-links">
+            <p>Síguenos en nuestras redes:</p>
+            <ul>
+                <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+                <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+                <li><a href="https://x.com" target="_blank">X (antes Twitter)</a></li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+"""
+
+# Guardar el archivo
+about_path = Path("templates/about.html")
+about_path.parent.mkdir(parents=True, exist_ok=True)
+about_path.write_text(about_html, encoding="utf-8")
+about_path
+

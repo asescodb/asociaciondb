@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - AESCODB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <main class="login-container">
+        <div class="login-box">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Asociación" class="login-logo">
+            <h2>Zona de Socios</h2>
+            <form method="POST" action="{{ url_for('login') }}">
+                <label for="username">Nombre de usuario</label>
+                <input type="text" id="username" name="username" placeholder="Introduce tu nombre de usuario" required>
+
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="Introduce tu contraseña" required>
+
+                <button type="submit" class="btn-login">
+                    <span>🔑</span> Iniciar Sesión
+                </button>
+            </form>
+            <div class="login-extra">
+                <a href="#">¿Has olvidado tu contraseña?</a>
+            </div>
+            <div class="return-home">
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">
+                    ⬅️ Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

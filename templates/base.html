@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asociación Española de Coleccionistas de Dragon Ball</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+    <header class="navbar">
+        <a href="{{ url_for('home') }}" class="logo-link">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Asociación" class="logo">
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}">Inicio</a></li>
+                <li><a href="{{ url_for('about') }}">Quiénes Somos</a></li>
+                <li><a href="{{ url_for('register') }}">Hazte Socio</a></li>
+                <li><a href="{{ url_for('members_area') }}">Zona para Socios</a></li>
+                <li><a href="{{ url_for('contact') }}">Contacto</a></li>
+                {% if session.username %}
+                    <li><strong>{{ session.username }}</strong></li>
+                    <li><a href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; Asociación Española de Coleccionistas de Dragon Ball</p>
+        <div class="social-icons">
+            <!-- Reemplaza los "#" por tus URLs reales -->
+            <a href="#"><svg>…Facebook SVG…</svg></a>
+            <a href="#"><svg>…Instagram SVG…</svg></a>
+            <a href="#"><svg>…X SVG…</svg></a>
+        </div>
+    </footer>
+</body>
+</html>

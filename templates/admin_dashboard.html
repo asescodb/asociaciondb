@@ -1,0 +1,178 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración - AESCODB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<style>
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.btn-delete, .btn-confirm, .btn-cancel {
+  margin: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-confirm {
+  background-color: #d35400;
+  color: white;
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  color: black;
+}
+</style>
+
+<script>
+function openModal(id) {
+  document.getElementById('modal-' + id).style.display = 'block';
+}
+function closeModal(id) {
+  document.getElementById('modal-' + id).style.display = 'none';
+}
+</script>
+
+<body>
+<header class="navbar">
+    <a href="{{ url_for('home') }}" class="logo-link">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Asociación" class="logo">
+    </a>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('members_area') }}">Zona Socios</a></li>
+            <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="admin-container">
+    <h1>Panel de Administración</h1>
+
+    <div class="admin-actions">
+        <form method="GET">
+            <input type="text" name="search" placeholder="Buscar por nombre o usuario">
+            <select name="filter_role">
+                <option value="">Todos los roles</option>
+                <option value="Admin">Admin</option>
+                <option value="Socio">Socio</option>
+            </select>
+            <select name="filter_status">
+                <option value="">Todos los estados</option>
+                <option value="active">Activos</option>
+                <option value="inactive">Inactivos</option>
+            </select>
+            <button type="submit">Filtrar</button>
+            <a href="{{ url_for('export_users') }}" class="btn-export">📤 Exportar CSV</a>
+        </form>
+    </div>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Método de Pago</th>
+                <th>Rol</th>
+                <th>Activo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.payment_method }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('change_role', user_id=user.id) }}">
+                        <select name="new_role" onchange="this.form.submit()">
+                            <option value="Socio" {% if user.role == 'Socio' %}selected{% endif %}>Socio</option>
+                            <option value="Admin" {% if user.role == 'Admin' %}selected{% endif %}>Admin</option>
+                        </select>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="{{ url_for('toggle_activation', user_id=user.id) }}">
+                        <button type="submit">{{ '✅' if user.is_active else '❌' }}</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return confirm('¿Seguro que quieres eliminar este usuario?');">
+                        <button type="submit">🗑️</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- BLOQUE AÑADIDO: Gestión de Eventos -->
+    <h2>📅 Gestión de Eventos</h2>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Tipo</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Lugar</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for event in events %}
+        <tr>
+          <td>{{ event.titulo }}</td>
+          <td>{{ event.tipo }}</td>
+          <td>{{ event.fecha }}</td>
+          <td>{{ event.hora }}</td>
+          <td>{{ event.lugar }}</td>
+          <td>
+            <button onclick="openModal('{{ event.id }}')" class="btn-delete">🗑️ Eliminar</button>
+            <div id="modal-{{ event.id }}" class="modal">
+              <div class="modal-content">
+                <p>¿Estás seguro de que deseas eliminar el evento <strong>{{ event.titulo }}</strong>?</p>
+                <form action="{{ url_for('delete_event', event_id=event.id) }}" method="POST">
+                  <button type="submit" class="btn-confirm">Sí, eliminar</button>
+                  <button type="button" onclick="closeModal('{{ event.id }}')" class="btn-cancel">Cancelar</button>
+                </form>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</main>
+</body>
+</html>

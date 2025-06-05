@@ -1,0 +1,175 @@
+from pathlib import Path
+
+# Crear el contenido HTML para calendar.html
+calendar_html = '''<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendario de Eventos - AESCODB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .fc-toolbar-title {
+            color: #000;
+        }
+        .fc-button-primary {
+            background-color: orange;
+            border: none;
+            color: white;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            padding-top: 60px;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <a href="{{ url_for('home') }}" class="logo-link">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}">Inicio</a></li>
+                <li><a href="{{ url_for('members_area') }}">Volver a Zona de Socios</a></li>
+                <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 style="text-align:center;">Calendario de Eventos</h1>
+        <div id='calendar'></div>
+    </main>
+
+    <!-- Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p><strong>Tipo:</strong> <span id="modal-type"></span></p>
+            <p><strong>Fecha:</strong> <span id="modal-date"></span></p>
+            <p><strong>Lugar:</strong> <span id="modal-location"></span></p>
+            <p><strong>¿Asistirás?</strong></p>
+            <form>
+                <label><input type="radio" name="attendance" value="yes"> Asistiré</label><br>
+                <label><input type="radio" name="attendance" value="no"> No asistiré</label><br>
+                <label><input type="radio" name="attendance" value="maybe"> No lo sé</label>
+            </form>
+            <br>
+            <p><strong>Número de inscritos:</strong> <span id="modal-attendees">23</span></p>
+        </div>
+    </div>
+
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var modal = document.getElementById('eventModal');
+            var span = document.getElementsByClassName('close')[0];
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: [
+                    {
+                        title: '🔶 Reunión Mensual',
+                        start: '2025-06-08',
+                        extendedProps: {
+                            type: 'Reunión',
+                            location: 'Sala Online'
+                        },
+                        color: '#f39c12'
+                    },
+                    {
+                        title: '🔵 Concurso Fan Art',
+                        start: '2025-06-15',
+                        extendedProps: {
+                            type: 'Concurso',
+                            location: 'Plataforma Online'
+                        },
+                        color: '#3498db'
+                    },
+                    {
+                        title: '🟢 Quedada Madrid',
+                        start: '2025-06-22',
+                        extendedProps: {
+                            type: 'Quedada',
+                            location: 'Parque del Retiro'
+                        },
+                        color: '#2ecc71'
+                    },
+                    {
+                        title: '🟣 Sorteo Exclusivo',
+                        start: '2025-06-28',
+                        extendedProps: {
+                            type: 'Sorteo',
+                            location: 'Web AESCODB'
+                        },
+                        color: '#9b59b6'
+                    }
+                ],
+                eventClick: function (info) {
+                    document.getElementById('modal-title').textContent = info.event.title;
+                    document.getElementById('modal-type').textContent = info.event.extendedProps.type;
+                    document.getElementById('modal-date').textContent = info.event.start.toLocaleDateString();
+                    document.getElementById('modal-location').textContent = info.event.extendedProps.location;
+                    modal.style.display = 'block';
+                }
+            });
+
+            calendar.render();
+
+            span.onclick = function () {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+'''
+
+# Guardar el archivo
+calendar_path = Path("/mnt/data/calendar.html")
+calendar_path.write_text(calendar_html, encoding="utf-8")
+calendar_path
